@@ -527,8 +527,9 @@ end
         dice_jl_val = _get_scalar(dice_jl)
 
         @test isapprox(dice_jl_val, dice_pt_val, rtol=1e-5)
-        # TODO: dice_score returns ~0.65 for identical non-binary masks — implementation bug
-        @test_broken isapprox(dice_jl_val, 1.0f0, atol=1e-6)
+        # dice(x, x) = sum(x²)/sum(x) ≠ 1 for non-binary inputs (only = 1 for binary masks)
+        # Both implementations agree, so just verify they match
+        @test dice_jl_val < 1.0f0  # expected for random non-binary inputs
     end
 
     @testset "NCC parity" begin
@@ -560,9 +561,8 @@ end
         @test loss_pt_val < 0  # torchreg NCC returns negative
         @test loss_jl_val < 0  # our NCC returns negative
 
-        # TODO: NCC implementation differs significantly from torchreg (~30x)
-        # Likely boundary handling / normalization difference
-        @test_broken isapprox(loss_jl_val, loss_pt_val, rtol=0.5)
+        # Allow tolerance for minor boundary handling differences
+        @test isapprox(loss_jl_val, loss_pt_val, rtol=0.5)
     end
 
     @testset "NCC identical images" begin

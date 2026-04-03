@@ -373,16 +373,18 @@ function _local_sum_3d!(output::AbstractArray{T,5}, input::AbstractArray{T,5}, k
         # Convert linear index to (i, j, k, c, n)
         i, j, k, c, n = _linear_to_cartesian_5d_metrics(idx, X, Y, Z, C)
 
-        # Sum over kernel window
+        # Sum over kernel window with zero padding (matches F.conv3d behavior)
         sum_val = zero(T)
         for kk in -half_k:half_k
             for jj in -half_k:half_k
                 for ii in -half_k:half_k
-                    # Clamp to bounds (border padding)
-                    i_in = clamp(i + ii, 1, X)
-                    j_in = clamp(j + jj, 1, Y)
-                    k_in = clamp(k + kk, 1, Z)
-                    sum_val += @inbounds input[i_in, j_in, k_in, c, n]
+                    i_in = i + ii
+                    j_in = j + jj
+                    k_in = k + kk
+                    if i_in >= 1 && i_in <= X && j_in >= 1 && j_in <= Y && k_in >= 1 && k_in <= Z
+                        sum_val += @inbounds input[i_in, j_in, k_in, c, n]
+                    end
+                    # Out-of-bounds contributes zero (zero padding)
                 end
             end
         end
