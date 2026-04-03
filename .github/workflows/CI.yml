@@ -66,6 +66,8 @@ jobs:
           julia --project -e '
             println("Arch: ", Sys.ARCH)
             println("Machine: ", Sys.MACHINE)
+            using Pkg
+            Pkg.add("Metal")
             using Metal
             println("Metal.jl loaded successfully")
             println("Metal functional: ", Metal.functional())
