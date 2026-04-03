@@ -5,12 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml">
-    <img src="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml/badge.svg?branch=main" alt="CI">
-  </a>
-  <a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
-  </a>
+  <a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml"><img src="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml/badge.svg?branch=main" alt="CI"></a>&nbsp;<a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
 </p>
 
 ## Demo
