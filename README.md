@@ -1,4 +1,13 @@
-# MedicalImageRegistration.jl
+<h1 align="center">MedicalImageRegistration.jl</h1>
+
+<p align="center">
+  <a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml">
+    <img src="https://github.com/MolloiLab/MedicalImageRegistration.jl/actions/workflows/CI.yml/badge.svg?branch=main" alt="CI">
+  </a>
+  <a href="https://github.com/MolloiLab/MedicalImageRegistration.jl/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
+  </a>
+</p>
 
 A minimal Julia library for 2D and 3D medical image registration, inspired by [torchreg](https://github.com/codingfisch/torchreg).
 
