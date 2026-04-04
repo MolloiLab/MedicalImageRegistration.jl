@@ -418,6 +418,66 @@ function _loss_backward!(
     return nothing
 end
 
+# Dice loss backward (4D)
+function _loss_backward!(
+    d_moved::AbstractArray{T,4},
+    d_static::AbstractArray{T,4},
+    d_loss_arr::AbstractArray{T},
+    moved::AbstractArray{T,4},
+    static::AbstractArray{T,4},
+    ::typeof(dice_loss)
+) where T
+    # dice_loss = 1 - dice_score, so gradient is negated
+    inter = similar(moved)
+    union_arr = similar(moved)
+    AK.foreachindex(moved) do idx
+        p = @inbounds moved[idx]
+        t = @inbounds static[idx]
+        @inbounds inter[idx] = p * t
+        @inbounds union_arr[idx] = p + t
+    end
+    inter_sum = AK.reduce(+, inter; init=zero(T))
+    union_sum = AK.reduce(+, union_arr; init=zero(T))
+
+    # Negate d_loss_arr for dice_loss = 1 - dice_score
+    neg_d_loss = similar(d_loss_arr)
+    AK.foreachindex(neg_d_loss) do idx
+        @inbounds neg_d_loss[idx] = -d_loss_arr[idx]
+    end
+
+    _∇dice_score!(d_moved, d_static, neg_d_loss, moved, static, inter_sum, union_sum)
+    return nothing
+end
+
+# Dice loss backward (5D)
+function _loss_backward!(
+    d_moved::AbstractArray{T,5},
+    d_static::AbstractArray{T,5},
+    d_loss_arr::AbstractArray{T},
+    moved::AbstractArray{T,5},
+    static::AbstractArray{T,5},
+    ::typeof(dice_loss)
+) where T
+    inter = similar(moved)
+    union_arr = similar(moved)
+    AK.foreachindex(moved) do idx
+        p = @inbounds moved[idx]
+        t = @inbounds static[idx]
+        @inbounds inter[idx] = p * t
+        @inbounds union_arr[idx] = p + t
+    end
+    inter_sum = AK.reduce(+, inter; init=zero(T))
+    union_sum = AK.reduce(+, union_arr; init=zero(T))
+
+    neg_d_loss = similar(d_loss_arr)
+    AK.foreachindex(neg_d_loss) do idx
+        @inbounds neg_d_loss[idx] = -d_loss_arr[idx]
+    end
+
+    _∇dice_score!(d_moved, d_static, neg_d_loss, moved, static, inter_sum, union_sum)
+    return nothing
+end
+
 # Generic fallback: use MSE gradient as approximation
 # This is better than crashing, but logs a warning
 function _loss_backward!(
