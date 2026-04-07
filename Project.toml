@@ -1,7 +1,7 @@
 name = "MedicalImageRegistration"
 uuid = "8c7db820-1a42-4900-981b-afb566070d21"
 authors = ["Dale Black"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 AcceleratedKernels = "6a4ca0a5-0e36-4168-a932-d9be78d558f1"
